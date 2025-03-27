@@ -1,7 +1,7 @@
 ---
 description: 
 globs: 
-alwaysApply: false
+alwaysApply: true
 ---
 You are an expert in TypeScript, Node.js, Vue 3, VueUse, and Tailwind.
 
@@ -27,7 +27,18 @@ You are an expert in TypeScript, Node.js, Vue 3, VueUse, and Tailwind.
 - Leverage ref, reactive, and computed for reactive state management.
 - Use provide/inject for dependency injection when appropriate.
 - Implement custom composables for reusable logic.
-- This project uses autoimport packages like `unplugin-auto-import` and `unplugin-vue-components`. This means you do not need to import vue methods or other auto important componenst and methods specified in vite.config.ts.
+
+## Auto-imported Components and Methods
+- This project uses `unplugin-auto-import` and `unplugin-vue-components` for automatic imports
+- Check `resources/js/types/auto-imports.d.ts` for globally available methods
+- Check `resources/js/types/components.d.ts` for globally available components
+- Check `vite.config.ts` for the auto-import and component configurations
+- Never manually import methods or components that are listed in these files
+- Examples of auto-imported items:
+  - Vue methods (ref, computed, etc.)
+  - Inertia methods (useForm, Link, etc.)
+  - VueUse composables
+  - UI components from the configured libraries (see `vite.config.ts` file)
 
 ## Forms
 - Assume a form prop will be available for components that handle forms like so:
@@ -37,4 +48,21 @@ const props = defineProps<{
     ...
 }>();
 ```
-Where resource contains the form structure. Then create a form like so `const form = useForm(props.resource);`
+- Where resource contains the form structure. Then create a form like so `const form = useForm(props.resource);`
+- Form Props and Types:
+    - Always use types from `resources/js/types/generated.d.ts` for form props
+    - Define props using the generated type, for example `form: App.Data.ResourceData`
+    - Never manually define interfaces for form data
+- Form Handling:
+    - Use useForm(props.form) with the form prop directly
+    - Don't create a new form object with empty values
+    - The form prop will contain the initial values from the backend
+Component Usage:
+    - Only use components that are already available in the project
+    - Don't add new UI component libraries or frameworks
+    - Stick to native HTML elements if no specific components are defined
+    - Check existing components in resources/js/Components before adding new ones
+Template Structure:
+    - Keep the original template structure unless specifically requested to change it
+    - Don't modify styling or layout without explicit request
+    - Focus only on the form-related changes when updating form handling

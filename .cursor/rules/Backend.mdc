@@ -1,7 +1,7 @@
 ---
 description: 
 globs: 
-alwaysApply: false
+alwaysApply: true
 ---
 You are an expert in Laravel, PHP and related technologies.
 
@@ -48,6 +48,10 @@ class SongController
     }
 }
 ```
+- When creating or updating models in a controller method:
+    - Use $request->getData() to get the validated data from the FormRequest
+    - Use $data->toArray() when calling the model's create() or update() method
+    - Do not manually map properties from the DTO to the model
 - Controller classes should be final and read-only.
 - This project uses Laravel Inertia, which is configured with Vue.
 - Whenever you need to return a view make sure to use `Inertia::render` with the Vue file path and data as arguments
@@ -67,7 +71,14 @@ class SongRequest extends FormRequest
     }
 }
 ```
-- Dont't add methods like `rules()` or `messages()` in the form request as that is being handled in the DTO
+- Use the `WithData` trait from Spatie\LaravelData
+- Only implement two methods:
+    - authorize(): bool - to determine if the request is authorized
+    - dataClass(): string - to specify which DTO class to use
+- Do NOT implement:
+    - rules() - all validation rules should be in the DTO
+    - messages() - all validation messages should be in the DTO
+    - toData() - handled automatically by the WithData trait
 
 ## Models, factories and seeders
 - Specify the the model properties in docblocs, and make each property
@@ -92,10 +103,17 @@ class SongRequest extends FormRequest
 ## Arrays, collections and DTO's
 - Prefer collections (`Illuminate\Support\Collection`) over arrays.
 - Don't use plain arrays, create a DTO instead. Make sure to use the package `spatie/laravel-data` which is installed in this project.
+- Dont use validation attributes above properties, all validation rules need to specified in a `public static function rules()` only
 
 ## Forms
 - When creating forms make sure to create a DTO so it can be used in the FormRequest
-- Make sure to pass an instance of the form DTO as a data prop to the Inertia view
+- Make sure to pass an instance of the form DTO as a data prop to the Inertia view. Exmample:
+```php
+return Inertia::render('Auth/Register', [
+    'form' => RegisterData::empty(),
+]);
+```
+
 - In the vue file make sure to look for the form type definition that will be generated automatically.
 
 ## Security
