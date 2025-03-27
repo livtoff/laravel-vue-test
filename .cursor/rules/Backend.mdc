@@ -98,8 +98,8 @@ class SongRequest extends FormRequest
 - When a test fails, come up with a suggestion for the needed changes and ask for confirmation first. This helps preventing changing tests that are perfectly fine.
 
 ## Static code analysis
-- For static analysis the package `larastan/larastan` is used. Just like with tests make sure to run `composer analyse` after each feature you added.
-- We use Larastan level 5.
+- For static analysis the package `larastan/larastan` is used. Just like with tests make sure to run `composer analyse` after each feature you've added.
+- We use Larastan level 9.
 
 ## Arrays, collections and DTO's
 - Prefer collections (`Illuminate\Support\Collection`) over arrays.
