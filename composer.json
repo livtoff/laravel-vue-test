@@ -67,7 +67,8 @@
         ],
         "test": "vendor/bin/pest",
         "lint": "vendor/bin/pint",
-        "analyse": "vendor/bin/phpstan analyse"
+        "analyse": "vendor/bin/phpstan analyse",
+        "rector": "vendor/bin/rector"
     },
     "extra": {
         "laravel": {

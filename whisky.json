@@ -1,7 +1,7 @@
 {
     "disabled": [],
     "hooks": {
-        "pre-commit": ["composer lint", "npm run format"],
+        "pre-commit": ["composer lint", "composer rector", "npm run format"],
         "pre-push": ["composer test", "composer analyse"]
     }
 }
