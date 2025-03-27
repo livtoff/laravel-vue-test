@@ -6,63 +6,83 @@ alwaysApply: true
 You are an expert in TypeScript, Node.js, Vue 3, VueUse, and Tailwind.
 
 ## Code Style and Structure
-- Write concise, technical TypeScript code with accurate examples.
-- Use composition API and declarative programming patterns; avoid options API.
+- Write concise, well-structured TypeScript code with accurate, technical examples.
+- Use the Composition API and declarative programming patterns; avoid the Options API.
 - Prefer iteration and modularization over code duplication.
-- Use descriptive variable names with auxiliary verbs (e.g., isLoading, hasError).
-- Structure files: exported component, composables, helpers, static content, types.
+- Use clear, descriptive variable names with auxiliary verbs (e.g., `isLoading`, `hasError`).
+- Follow a structured file organization:
+  - Exported components
+  - Composables
+  - Helpers
+  - Static content
+  - Types
+- Keep components small and focused, ensuring single responsibility.
 
 ## Naming Conventions
-- Use lowercase with dashes for directories (e.g., components/auth-wizard).
-- Use PascalCase for component names (e.g., AuthWizard.vue).
-- Use camelCase for composables (e.g., useAuthState.ts).
+- Use **lowercase with dashes** for directories (e.g., `components/auth-wizard`).
+- Use **PascalCase** for component names (e.g., `AuthWizard.vue`).
+- Use **camelCase** for composables (e.g., `useAuthState.ts`).
+- Maintain consistency across files and folders.
 
-## TypeScript Usage
-- Use TypeScript for all code; prefer types over interfaces.
-- Avoid enums; use const objects instead.
-- Use Vue 3 with TypeScript, leveraging defineComponent and PropType.
+## TypeScript Best Practices
+- Use TypeScript exclusively; prefer **types** over **interfaces**.
+- Avoid `enum`; use `const` objects instead for better tree-shaking.
+- Use Vue 3 with TypeScript, leveraging `defineComponent` and `PropType`.
+- Always type function arguments and return values.
 
 ## Vue 3 and Composition API Best Practices
-- Make sure to start each file with the `script` tags followed by the `template` tags.
-- Leverage ref, reactive, and computed for reactive state management.
-- Use provide/inject for dependency injection when appropriate.
-- Implement custom composables for reusable logic.
+- Ensure each file starts with `<script setup>` followed by the `<template>` tag.
+- Use **ref**, **reactive**, and **computed** for reactive state management.
+- Prefer `defineProps` and `defineEmits` for prop handling and event emission.
+- Use `provide/inject` for dependency injection where appropriate.
+- Extract reusable logic into composables (`useXYZ.ts`).
+- Keep template logic clean and minimal—move logic into the script section.
 
-## Auto-imported Components and Methods
-- This project uses `unplugin-auto-import` and `unplugin-vue-components` for automatic imports
-- Check `resources/js/types/auto-imports.d.ts` for globally available methods
-- Check `resources/js/types/components.d.ts` for globally available components
-- Check `vite.config.ts` for the auto-import and component configurations
-- Never manually import methods or components that are listed in these files
+## Auto-Imported Components and Methods
+- The project uses `unplugin-auto-import` and `unplugin-vue-components` for automatic imports.
+- Before manually importing, check:
+  - `resources/js/types/auto-imports.d.ts` for globally available methods.
+  - `resources/js/types/components.d.ts` for globally available components.
+  - `vite.config.ts` for auto-import configurations.
+- Do **not** manually import methods or components listed in these files.
 - Examples of auto-imported items:
-  - Vue methods (ref, computed, etc.)
-  - Inertia methods (useForm, Link, etc.)
-  - VueUse composables
-  - UI components from the configured libraries (see `vite.config.ts` file)
+  - Vue methods (`ref`, `computed`, etc.).
+  - Inertia.js methods (`useForm`, `Link`, etc.).
+  - VueUse composables.
+  - UI components from configured libraries (`vite.config.ts`).
 
 ## Forms
-- Assume a form prop will be available for components that handle forms like so:
+- Expect a **form prop** to be available in components handling forms:
 ```ts
-const props = defineProps<{
-    resource: App.Data.ResourceData;
-    ...
-}>();
+const props = defineProps<{ resource: App.Data.ResourceData }>();
 ```
-- Where resource contains the form structure. Then create a form like so `const form = useForm(props.resource);`
-- Form Props and Types:
-    - Always use types from `resources/js/types/generated.d.ts` for form props
-    - Define props using the generated type, for example `form: App.Data.ResourceData`
-    - Never manually define interfaces for form data
-- Form Handling:
-    - Use useForm(props.form) with the form prop directly
-    - Don't create a new form object with empty values
-    - The form prop will contain the initial values from the backend
-Component Usage:
-    - Only use components that are already available in the project
-    - Don't add new UI component libraries or frameworks
-    - Stick to native HTML elements if no specific components are defined
-    - Check existing components in resources/js/Components before adding new ones
-Template Structure:
-    - Keep the original template structure unless specifically requested to change it
-    - Don't modify styling or layout without explicit request
-    - Focus only on the form-related changes when updating form handling
+- The `resource` object contains the initial form structure.
+- Instantiate the form with:
+```ts
+const form = useForm(props.resource);
+```
+### Form Props and Types
+- Always use types from `resources/js/types/generated.d.ts` for form props.
+- Define props using the generated type, e.g., `form: App.Data.ResourceData`.
+- **Never manually define interfaces** for form data.
+
+### Form Handling
+- Use `useForm(props.form)` **directly**.
+- Do **not** create an empty form object manually.
+- Expect the form prop to contain initial backend values.
+
+## Component Usage
+- Only use components that are already available in the project.
+- Do **not** introduce new UI component libraries or frameworks.
+- Prefer native HTML elements if no suitable component exists.
+- Before adding new components, check `resources/js/Components` for reusable options.
+
+## Template Structure
+- Keep the **original template structure** unless explicitly instructed otherwise.
+- Do **not** modify styling or layout without approval.
+- Focus strictly on **form-related changes** when updating form handling.
+
+## Performance and Optimization
+- Use lazy loading and dynamic imports for large components.
+- Avoid unnecessary reactivity—use `computed` instead of `watch` where possible.
+- Minimize DOM manipulations; avoid v-if inside loops if v-show can be used.

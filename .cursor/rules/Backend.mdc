@@ -3,119 +3,132 @@ description:
 globs: 
 alwaysApply: true
 ---
-You are an expert in Laravel, PHP and related technologies.
-
 ## General
-- This project used PHP 8.4.
-- Use consistent and descriptive names for variables, methods, and classes to improve readability.
-- Follow Larave's conventions: singular for models, plural for controllers that are related to models (e.g., User.php, UsersController.php).
-- For singlular stuff like Registering or a dashboard controlller, a singular controller like RegisterController or Dashboard controller is preferred.
-- Use PascalCase for class names, camelCase for method names, and snake_case for database columns.
-- Try to reduce the use of plain string values as much as possible for repeating string like a status. Create an Enum instead in `app\Enums`
-- Use `match()` over `switch()`
-- Don't install/add composer packages on your own, always ask first
-- Don't add/run migrations that are not related to the task at hand
+- This project uses **PHP 8.4**.
+- Use **consistent and descriptive** names for variables, methods, and classes to improve readability.
+- Follow Laravel's conventions:
+  - **Singular** for models (e.g., `User.php`).
+  - **Plural** for controllers managing models (e.g., `UsersController.php`).
+- For singular functionalities like registration or dashboards, use a singular controller name (e.g., `RegisterController`, `DashboardController`).
+- Naming conventions:
+  - **PascalCase** for class names.
+  - **camelCase** for method names.
+  - **snake_case** for database columns.
+- **Avoid repeating plain string values** (e.g., statuses). Use an Enum instead, placed in `app\Enums`.
+- Prefer `match()` over `switch()` for better readability and maintainability.
+- Do **not** install or add Composer packages without prior approval.
+- Do **not** create or modify migrations unrelated to the current task.
 
 ## Database and Eloquent
-- Use Eloquent ORM and the Query Build over raw SQL queries when possible.
-- Create query scopes in Models when you detect repeating patterns getting data via the database with eloquent.
+- Use **Eloquent ORM** and Query Builder over raw SQL queries whenever possible.
+- Create **query scopes** in models when encountering repetitive query patterns.
 
 ## Migrations
-- Use descriptive names
+- Use **descriptive** migration names.
 
 ## Routes
-- Each route you define must be placed in web.php.
-- A route must use a Controller and contain a name.
-- For naming a route use the Controller and the method, for example a show route that uses the `show` method on the `UsersController` should be named `users.show`.
-- Each public (not protected by additional middlware) GET route you add needs to be added to the `RoutesTest.php` in the `tests\Feature`. The package `spatie/pest-plugin-route-testing` is used for this specific feature. Each entry is a url, not a named route.
-- Make sure to run the `RoutesTest.php` test after each time you're done setting up and wiring a public GET route to a controller method.
+- Define all routes in **`web.php`**.
+- Routes must use a **controller** and be **named**.
+- Route naming convention: `{resource}.{method}` (e.g., `users.show` for `UsersController@show`).
+- Each **public (unprotected) GET route** must be tested in `tests\Feature\RoutesTest.php` using `spatie/pest-plugin-route-testing`.
+- Run `RoutesTest.php` after modifying or adding a public GET route.
 
 ## Controllers
-- Use resourceful controllers that only contain public methods like `show`, `create`, `store` `edit`, `update` and `delete`. Private methods are allowed in controllers.
-- Create a FormRequest methods that do any kind of form validation.
-- Only create models with the static `create` method using the validated form request as input.
-- The same goes for updating models but use the static `update` method instead.
-- Expect for both create and update methods a DTO will be used in the FormRequest class. So make sure to use the validated data like so:
-```php
-class SongController
-{
-    public function __invoke(SongRequest $request): SongData
-    {
-        $data = $request->getData();
-    
-        $song = Song::create($data->toArray());
-        
-        return $data;
-    }
-}
-```
-- When creating or updating models in a controller method:
-    - Use $request->getData() to get the validated data from the FormRequest
-    - Use $data->toArray() when calling the model's create() or update() method
-    - Do not manually map properties from the DTO to the model
-- Controller classes should be final and read-only.
-- This project uses Laravel Inertia, which is configured with Vue.
-- Whenever you need to return a view make sure to use `Inertia::render` with the Vue file path and data as arguments
-- If the file does not exist create it. Scaffold the file as described in `Vue.mdc`
+- Use **resourceful controllers** with only the following public methods: `index`, `show`, `create`, `store`, `edit`, `update`, `destroy`.
+- **Private methods** are allowed within controllers.
+- Use **FormRequest** for all form validation.
+- Create models using the **static `create()` method**, passing validated FormRequest data.
+- Update models using the **static `update()` method**, passing validated FormRequest data.
+- Always expect a **DTO** (Data Transfer Object) in FormRequests:
+  ```php
+  class SongController
+  {
+      public function __invoke(SongRequest $request): SongData
+      {
+          $data = $request->getData();
+          
+          $song = Song::create($data->toArray());
+          
+          return $data;
+      }
+  }
+  ```
+- When creating/updating models:
+  - Use `$request->getData()` to get validated data.
+  - Use `$data->toArray()` when passing data to `create()` or `update()`.
+  - **Do not manually map DTO properties to models**.
+- Controller classes should be **final** and **read-only**.
+- This project uses **Laravel Inertia with Vue**:
+  - Always return views using `Inertia::render(viewPath, data)`.
+  - If a Vue file is missing, create it according to `Vue.mdc` guidelines.
 
 ## FormRequest
-- As mentioned in the Controllers section, a FormRequest is needed for each controller method that performs validation.
-- Apply the appropriate DTO which should be available as described at the `Form` section below in this document. Here is an example of applying such a DTO:
-```php
-class SongRequest extends FormRequest
-{
-    use WithData;
-    
-    protected function dataClass(): string
-    {
-        return SongData::class;
-    }
-}
-```
-- Use the `WithData` trait from Spatie\LaravelData
-- Only implement two methods:
-    - authorize(): bool - to determine if the request is authorized
-    - dataClass(): string - to specify which DTO class to use
-- Do NOT implement:
-    - rules() - all validation rules should be in the DTO
-    - messages() - all validation messages should be in the DTO
-    - toData() - handled automatically by the WithData trait
+- A **FormRequest** is required for each controller method that validates input.
+- Each FormRequest must specify a DTO as follows:
+  ```php
+  class SongRequest extends FormRequest
+  {
+      use WithData;
+      
+      protected function dataClass(): string
+      {
+          return SongData::class;
+      }
+  }
+  ```
+- Use the `WithData` trait from `Spatie\LaravelData`.
+- Implement only two methods:
+  - `authorize(): bool`
+  - `dataClass(): string`
+- **Do not implement**:
+  - `rules()` → Place validation rules in the DTO.
+  - `messages()` → Define validation messages in the DTO.
+  - `toData()` → This is automatically handled by `WithData`.
 
-## Models, factories and seeders
-- Specify the the model properties in docblocs, and make each property
-- Allways use `protected $fillable` property and specify fillable properties 
-- Lazy loading of model relations is not allowed, always eager load relations.
-- Apply attribute casts for thing like dates and booleans.
-- Make sure to create a Factory for each model you add.
-- Make sure to add a Seeder for each model you add.
-- Whenever a model property changes, make sure to update the corresponding factory and seeder.
-- Models should be final classes
+## Models, Factories, and Seeders
+- Document **model properties** using PHPDoc annotations.
+- Always define **`protected $fillable`** and explicitly list fillable attributes.
+- **Disable lazy loading**: Always eager-load relationships.
+- Apply **attribute casts** (e.g., for dates and booleans).
+- Create a **Factory** for each model.
+- Create a **Seeder** for each model.
+- Update **factories and seeders** when modifying model properties.
+- **Models should be final classes**.
 
 ## Testing
-- For testing we use Pest. Make sure to create Pest test for each feature you add. This includes tests for controllers. When a test fails reiterate the code until the test passes.
-- Make sure to not delete tests.
-- Make sure to not update or edit tests that are not related to the task at hand.
-- When a test fails, come up with a suggestion for the needed changes and ask for confirmation first. This helps preventing changing tests that are perfectly fine.
+- This project uses **Pest** for testing.
+- Each new feature must include **Pest tests**, including **controller tests**.
+- Do **not** delete tests.
+- Do **not** modify unrelated tests.
+- If a test fails:
+  - Propose the required changes.
+  - Get confirmation before modifying the test.
 
-## Static code analysis
-- For static analysis the package `larastan/larastan` is used. Just like with tests make sure to run `composer analyse` after each feature you've added.
-- We use Larastan level 9.
+## Static Code Analysis
+- We use **Larastan (`larastan/larastan`)** for static analysis.
+- Always run `composer analyse` after adding a new feature.
+- Use **Larastan level 9**.
 
-## Arrays, collections and DTO's
-- Prefer collections (`Illuminate\Support\Collection`) over arrays.
-- Don't use plain arrays, create a DTO instead. Make sure to use the package `spatie/laravel-data` which is installed in this project.
-- Dont use validation attributes above properties, all validation rules need to specified in a `public static function rules()` only
+## Arrays, Collections, and DTOs
+- Prefer **collections (`Illuminate\Support\Collection`)** over arrays.
+- Do **not** use plain arrays. Instead, create a **DTO**.
+- Use the `spatie/laravel-data` package for DTOs.
+- **Do not use validation attributes above DTO properties**.
+- All validation rules must be defined in:
+  ```php
+  public static function rules(): array
+  ```
 
 ## Forms
-- When creating forms make sure to create a DTO so it can be used in the FormRequest
-- Make sure to pass an instance of the form DTO as a data prop to the Inertia view. Exmample:
-```php
-return Inertia::render('Auth/Register', [
-    'form' => RegisterData::empty(),
-]);
-```
-
-- In the vue file make sure to look for the form type definition that will be generated automatically.
+- Always create a **DTO** for handling form data in FormRequests.
+- Pass DTO instances as a `form` data prop to Inertia views:
+  ```php
+  return Inertia::render('Auth/Register', [
+      'form' => RegisterData::empty(),
+  ]);
+  ```
+- The corresponding Vue file should define the form type automatically.
 
 ## Security
-- Make sure to not introduce SQL injection vulnerabilities, always utilize FormRequests when processing user input.
+- Prevent **SQL injection vulnerabilities** by always using FormRequests to validate user input.
+- Avoid exposing sensitive data in responses.
