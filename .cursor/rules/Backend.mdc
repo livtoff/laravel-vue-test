@@ -8,7 +8,8 @@ You are an expert in Laravel, PHP and related technologies.
 ## General
 - This project used PHP 8.4.
 - Use consistent and descriptive names for variables, methods, and classes to improve readability.
-- Follow Larave's conventions: singular for models, plural for controllers (e.g., User.php, UsersController.php).
+- Follow Larave's conventions: singular for models, plural for controllers that are related to models (e.g., User.php, UsersController.php).
+- For singlular stuff like Registering or a dashboard controlller, a singular controller like RegisterController or Dashboard controller is preferred.
 - Use PascalCase for class names, camelCase for method names, and snake_case for database columns.
 - Try to reduce the use of plain string values as much as possible for repeating string like a status. Create an Enum instead in `app\Enums`
 - Use `match()` over `switch()`
