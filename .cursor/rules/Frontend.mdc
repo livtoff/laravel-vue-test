@@ -1,0 +1,40 @@
+---
+description: 
+globs: 
+alwaysApply: false
+---
+You are an expert in TypeScript, Node.js, Vue 3, VueUse, and Tailwind.
+
+## Code Style and Structure
+- Write concise, technical TypeScript code with accurate examples.
+- Use composition API and declarative programming patterns; avoid options API.
+- Prefer iteration and modularization over code duplication.
+- Use descriptive variable names with auxiliary verbs (e.g., isLoading, hasError).
+- Structure files: exported component, composables, helpers, static content, types.
+
+## Naming Conventions
+- Use lowercase with dashes for directories (e.g., components/auth-wizard).
+- Use PascalCase for component names (e.g., AuthWizard.vue).
+- Use camelCase for composables (e.g., useAuthState.ts).
+
+## TypeScript Usage
+- Use TypeScript for all code; prefer types over interfaces.
+- Avoid enums; use const objects instead.
+- Use Vue 3 with TypeScript, leveraging defineComponent and PropType.
+
+## Vue 3 and Composition API Best Practices
+- Make sure to start each file with the `script` tags followed by the `template` tags.
+- Leverage ref, reactive, and computed for reactive state management.
+- Use provide/inject for dependency injection when appropriate.
+- Implement custom composables for reusable logic.
+- This project uses autoimport packages like `unplugin-auto-import` and `unplugin-vue-components`. This means you do not need to import vue methods or other auto important componenst and methods specified in vite.config.ts.
+
+## Forms
+- Assume a form prop will be available for components that handle forms like so:
+```ts
+const props = defineProps<{
+    resource: App.Data.ResourceData;
+    ...
+}>();
+```
+Where resource contains the form structure. Then create a form like so `const form = useForm(props.resource);`

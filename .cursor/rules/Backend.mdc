@@ -1,0 +1,102 @@
+---
+description: 
+globs: 
+alwaysApply: false
+---
+You are an expert in Laravel, PHP and related technologies.
+
+## General
+- This project used PHP 8.4.
+- Use consistent and descriptive names for variables, methods, and classes to improve readability.
+- Follow Larave's conventions: singular for models, plural for controllers (e.g., User.php, UsersController.php).
+- Use PascalCase for class names, camelCase for method names, and snake_case for database columns.
+- Try to reduce the use of plain string values as much as possible for repeating string like a status. Create an Enum instead in `app\Enums`
+- Use `match()` over `switch()`
+- Don't install/add composer packages on your own, always ask first
+- Don't add/run migrations that are not related to the task at hand
+
+## Database and Eloquent
+- Use Eloquent ORM and the Query Build over raw SQL queries when possible.
+- Create query scopes in Models when you detect repeating patterns getting data via the database with eloquent.
+
+## Migrations
+- Use descriptive names
+
+## Routes
+- Each route you define must be placed in web.php.
+- A route must use a Controller and contain a name.
+- For naming a route use the Controller and the method, for example a show route that uses the `show` method on the `UsersController` should be named `users.show`.
+- Each public (not protected by additional middlware) GET route you add needs to be added to the `RoutesTest.php` in the `tests\Feature`. The package `spatie/pest-plugin-route-testing` is used for this specific feature. Each entry is a url, not a named route.
+- Make sure to run the `RoutesTest.php` test after each time you're done setting up and wiring a public GET route to a controller method.
+
+## Controllers
+- Use resourceful controllers that only contain public methods like `show`, `create`, `store` `edit`, `update` and `delete`. Private methods are allowed in controllers.
+- Create a FormRequest methods that do any kind of form validation.
+- Only create models with the static `create` method using the validated form request as input.
+- The same goes for updating models but use the static `update` method instead.
+- Expect for both create and update methods a DTO will be used in the FormRequest class. So make sure to use the validated data like so:
+```php
+class SongController
+{
+    public function __invoke(SongRequest $request): SongData
+    {
+        $data = $request->getData();
+    
+        $song = Song::create($data->toArray());
+        
+        return $data;
+    }
+}
+```
+- Controller classes should be final and read-only.
+- This project uses Laravel Inertia, which is configured with Vue.
+- Whenever you need to return a view make sure to use `Inertia::render` with the Vue file path and data as arguments
+- If the file does not exist create it. Scaffold the file as described in `Vue.mdc`
+
+## FormRequest
+- As mentioned in the Controllers section, a FormRequest is needed for each controller method that performs validation.
+- Apply the appropriate DTO which should be available as described at the `Form` section below in this document. Here is an example of applying such a DTO:
+```php
+class SongRequest extends FormRequest
+{
+    use WithData;
+    
+    protected function dataClass(): string
+    {
+        return SongData::class;
+    }
+}
+```
+- Dont't add methods like `rules()` or `messages()` in the form request as that is being handled in the DTO
+
+## Models, factories and seeders
+- Specify the the model properties in docblocs, and make each property
+- Allways use `protected $fillable` property and specify fillable properties 
+- Lazy loading of model relations is not allowed, always eager load relations.
+- Apply attribute casts for thing like dates and booleans.
+- Make sure to create a Factory for each model you add.
+- Make sure to add a Seeder for each model you add.
+- Whenever a model property changes, make sure to update the corresponding factory and seeder.
+- Models should be final classes
+
+## Testing
+- For testing we use Pest. Make sure to create Pest test for each feature you add. This includes tests for controllers. When a test fails reiterate the code until the test passes.
+- Make sure to not delete tests.
+- Make sure to not update or edit tests that are not related to the task at hand.
+- When a test fails, come up with a suggestion for the needed changes and ask for confirmation first. This helps preventing changing tests that are perfectly fine.
+
+## Static code analysis
+- For static analysis the package `larastan/larastan` is used. Just like with tests make sure to run `composer analyse` after each feature you added.
+- We use Larastan level 5.
+
+## Arrays, collections and DTO's
+- Prefer collections (`Illuminate\Support\Collection`) over arrays.
+- Don't use plain arrays, create a DTO instead. Make sure to use the package `spatie/laravel-data` which is installed in this project.
+
+## Forms
+- When creating forms make sure to create a DTO so it can be used in the FormRequest
+- Make sure to pass an instance of the form DTO as a data prop to the Inertia view
+- In the vue file make sure to look for the form type definition that will be generated automatically.
+
+## Security
+- Make sure to not introduce SQL injection vulnerabilities, always utilize FormRequests when processing user input.
