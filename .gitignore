@@ -22,3 +22,7 @@ yarn-error.log
 /.vscode
 /.zed
 /resources/js/types/*.d.ts
+/resources/js/routes/
+/resources/js/actions/
+/resources/js/trail/
+/resources/js/wayfinder/

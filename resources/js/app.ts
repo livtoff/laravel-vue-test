@@ -7,7 +7,7 @@ import type { DefineComponent } from "vue";
 import { createApp, h } from "vue";
 import { ZiggyVue } from "../../vendor/tightenco/ziggy";
 import { trail } from "momentum-trail";
-import routes from "@/routes/routes.json";
+import routes from "@/trail/routes.json";
 
 const appName = import.meta.env.VITE_APP_NAME || "Laravel";
 
