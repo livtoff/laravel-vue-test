@@ -5,7 +5,7 @@ namespace App\Console\Commands;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\File;
 
-class GenerateControllersTs extends Command
+class GenerateControllersTsCommand extends Command
 {
     protected $signature = 'generate:controllers-ts';
 
