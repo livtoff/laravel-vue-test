@@ -18,12 +18,12 @@ class GenerateControllersTs extends Command
 
         $files = $this->getControllerFiles($actionsPath);
 
-        $lines = array_map(function ($file) use ($actionsPath) {
+        $lines = array_map(function ($file) use ($actionsPath): string {
             $relativePath = str_replace(DIRECTORY_SEPARATOR, '/', ltrim(str_replace($actionsPath, '', $file), '/'));
             $relativeModule = './actions/'.$relativePath;
             $exportName = pathinfo($file, PATHINFO_FILENAME); // e.g., AboutController
 
-            return "export { default as {$exportName} } from '{$relativeModule}';";
+            return sprintf("export { default as %s } from '%s';", $exportName, $relativeModule);
         }, $files);
 
         $header = "// Auto-generated file – do not edit manually\n\n";
