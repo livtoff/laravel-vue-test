@@ -36,6 +36,9 @@ class GenerateControllersTs extends Command
         return Command::SUCCESS;
     }
 
+    /**
+     * @return array<int, string>
+     */
     private function getControllerFiles(string $dir): array
     {
         $controllerFiles = [];
