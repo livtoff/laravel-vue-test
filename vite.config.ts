@@ -29,11 +29,6 @@ export default defineConfig({
                 pattern: ["routes/*.php", "app/**/Http/**/*.php"],
             },
             {
-                name: "trail",
-                run: ["php", "artisan", "trail:generate"],
-                pattern: ["routes/*.php"],
-            },
-            {
                 name: "typescript",
                 run: ["php", "artisan", "typescript:transform"],
                 pattern: ["app/{Data,Enums}/**/*.php"],
@@ -54,7 +49,8 @@ export default defineConfig({
                     "momentum-trail": ["route", "current"],
                 },
             ],
-            dirs: ["./resources/js", "./resources/js/actions"],
+
+            dirs: ["./resources/js", "./resources/js/controllers"],
         }),
         components({
             dirs: ["resources/js"],
