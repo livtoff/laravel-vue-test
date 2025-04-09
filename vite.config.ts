@@ -49,7 +49,10 @@ export default defineConfig({
                 },
             ],
 
-            dirs: ["./resources/js", "./resources/js/actions/**/index.ts"],
+            dirs: [
+                "./resources/js",
+                "./resources/js/actions/App/Http/Controllers/index.ts",
+            ],
         }),
         components({
             dirs: ["resources/js"],
