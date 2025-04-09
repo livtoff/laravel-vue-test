@@ -1,5 +1,5 @@
 <script setup lang="ts"></script>
 
 <template>
-    <div>Home</div>
+    <Link :href="Controllers.HomeController.show()">Home</Link>
 </template>

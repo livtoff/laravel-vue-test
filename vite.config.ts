@@ -46,11 +46,10 @@ export default defineConfig({
                 "@vueuse/core",
                 {
                     "@inertiajs/vue3": ["router", "useForm", "usePage", "Link"],
-                    "momentum-trail": ["route", "current"],
                 },
             ],
 
-            dirs: ["./resources/js", "./resources/js/controllers"],
+            dirs: ["./resources/js", "./resources/js/actions/**/index.ts"],
         }),
         components({
             dirs: ["resources/js"],
@@ -69,11 +68,4 @@ export default defineConfig({
             ],
         }),
     ],
-    resolve: {
-        alias: {
-            "@": path.resolve(__dirname, "./resources/js"),
-            "@actions": path.resolve(__dirname, "./resources/js/actions"),
-            "@routes": path.resolve(__dirname, "./resources/js/routes"),
-        },
-    },
 });
