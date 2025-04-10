@@ -59,7 +59,7 @@ export default defineConfig({
             dts: "resources/js/types/components.d.ts",
             resolvers: [
                 (name: string) => {
-                    const components = ["Link"];
+                    const components = ["Link", "Head"];
 
                     if (components.includes(name)) {
                         return {
