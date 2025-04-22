@@ -26,5 +26,6 @@ class AppServiceProvider extends ServiceProvider
     {
         Model::preventLazyLoading(! app()->isProduction());
         Model::preventAccessingMissingAttributes();
+        Model::unguard();
     }
 }
