@@ -1,6 +1,5 @@
 <?php
 
-use App\Http\Controllers;
-use Illuminate\Support\Facades\Route;
+use NckRtl\RouteMaker\Facades\RouteMaker;
 
-Route::get('/', [Controllers\HomeController::class, 'show'])->name('home');
+RouteMaker::routes();

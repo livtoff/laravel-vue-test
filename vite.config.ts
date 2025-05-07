@@ -24,6 +24,11 @@ export default defineConfig({
         }),
         run([
             {
+                name: "route-maker",
+                run: ["php", "artisan", "route-maker:make"],
+                pattern: ["app/**/Http/**/*.php"],
+            },
+            {
                 name: "wayfinder",
                 run: ["php", "artisan", "wayfinder:generate"],
                 pattern: ["routes/*.php", "app/**/Http/**/*.php"],
