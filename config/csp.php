@@ -8,6 +8,7 @@ return [
      */
     'presets' => [
         \Spatie\Csp\Presets\Basic::class,
+        \App\Support\Csp\Presets\Development::class,
     ],
 
     /**

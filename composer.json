@@ -7,6 +7,20 @@
         "laravel",
         "framework"
     ],
+    "repositories": [
+        {
+            "type": "path",
+            "url": "../packages/route-maker"
+        },
+        {
+            "type": "path",
+            "url": "../livtoff/laravel"
+        },
+        {
+            "type": "path",
+            "url": "../packages/laravel-telescope-toolbar"
+        }
+    ],
     "license": "MIT",
     "require": {
         "php": "^8.4",
@@ -15,14 +29,15 @@
         "laravel/horizon": "^5.31",
         "laravel/tinker": "^2.10.1",
         "laravel/wayfinder": "^0.1.2",
-        "nckrtl/route-maker": "^0.3.1",
+        "livtoff/laravel": "@dev",
+        "nckrtl/route-maker": "@dev",
         "spatie/laravel-csp": "^3.8",
         "spatie/laravel-data": "^4.14",
         "spatie/laravel-typescript-transformer": "^2.5"
     },
     "require-dev": {
         "fakerphp/faker": "^1.23",
-        "fruitcake/laravel-telescope-toolbar": "^1.3",
+        "fruitcake/laravel-telescope-toolbar": "@dev",
         "larastan/larastan": "^3.0",
         "laravel/pail": "^1.2.2",
         "laravel/pint": "^1.21",

@@ -30,6 +30,7 @@
     "dependencies": {
         "@headlessui/vue": "^1.7.23",
         "@inertiajs/vue3": "^2.0.7",
+        "@livtoff/ui": "^0.0.16",
         "@tailwindcss/forms": "^0.5.3",
         "@types/node": "^22.10.2",
         "@types/ziggy-js": "^1.3.3",
@@ -38,6 +39,7 @@
         "class-variance-authority": "^0.7.1",
         "clsx": "^2.1.1",
         "lucide-vue-next": "^0.508.0",
+        "nprogress": "^0.2.0",
         "reka-ui": "^2.2.1",
         "tailwind-merge": "^3.2.0",
         "typescript": "^5.2.2",
