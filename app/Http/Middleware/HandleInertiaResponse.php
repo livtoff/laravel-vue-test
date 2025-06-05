@@ -4,8 +4,8 @@ namespace App\Http\Middleware;
 
 use Closure;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Illuminate\View\View;
-use Symfony\Component\HttpFoundation\Response;
 
 class HandleInertiaResponse
 {
@@ -16,7 +16,7 @@ class HandleInertiaResponse
     /**
      * Handle an incoming request.
      *
-     * @param  \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response)  $next
+     * @param  \Closure(\Illuminate\Http\Request): (\Illuminate\Http\Response)  $next
      */
     public function handle(Request $request, Closure $next): Response
     {
@@ -29,6 +29,10 @@ class HandleInertiaResponse
         }
 
         $inertiaProperties = $this->getInertiaProperties();
+
+        if (! is_array($inertiaProperties)) {
+            return $this->response;
+        }
 
         $pageProps = $inertiaProperties['props'];
 
@@ -45,7 +49,7 @@ class HandleInertiaResponse
             'page' => [
                 'props' => $pageProps,
                 'component' => $inertiaProperties['component'],
-                'component_path' => base_path(sprintf('resources/js/pages/%s.vue', $inertiaProperties['component'])),
+                'component_path' => gettype($inertiaProperties['component']) === 'string' ? base_path(sprintf('resources/js/pages/%s.vue', $inertiaProperties['component'])) : null,
                 'component_props' => $pageComponentProps,
             ],
             'clearHistory' => $inertiaProperties['clearHistory'],
@@ -80,6 +84,9 @@ class HandleInertiaResponse
         return $originalContent;
     }
 
+    /**
+     * @return array<string, mixed>|null
+     */
     private function getPageComponentProps(mixed $pageProps): ?array
     {
         if (! is_array($pageProps)) {
