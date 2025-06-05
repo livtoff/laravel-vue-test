@@ -10,7 +10,10 @@ class Development implements Preset
 {
     public function configure(Policy $policy): void
     {
-        $appDomain = explode('://', config('app.url'))[1];
+        /** @var string $appUrl */
+        $appUrl = config('app.url');
+
+        $appDomain = explode('://', $appUrl)[1];
 
         if (app()->isLocal()) {
             // Allow Vite to connect to the development server
