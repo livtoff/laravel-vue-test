@@ -3,10 +3,10 @@
 use App\Http\Middleware\GenerateAndSetCspNonce;
 use App\Http\Middleware\HandleInertiaRequests;
 use App\Http\Middleware\HandleInertiaResponse;
+use App\Support\Csp\AddCspHeaders;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
-use Spatie\Csp\AddCspHeaders;
 
 return Application::configure(basePath: dirname(__DIR__))
     ->withRouting(
