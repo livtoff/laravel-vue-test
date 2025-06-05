@@ -76,7 +76,8 @@
         "lint": "vendor/bin/pint",
         "analyse": "vendor/bin/phpstan analyse",
         "rector": "vendor/bin/rector",
-        "check": "composer test && composer analyse"
+        "check": "composer test && composer analyse",
+        "available-updates": "composer outdated -D"
     },
     "extra": {
         "laravel": {
