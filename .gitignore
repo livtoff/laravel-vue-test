@@ -26,3 +26,4 @@ yarn-error.log
 /resources/js/actions/
 /resources/js/trail/
 /resources/js/wayfinder/
+/routes/route-maker.php
