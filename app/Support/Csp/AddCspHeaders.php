@@ -10,11 +10,12 @@ use Symfony\Component\HttpFoundation\Response;
 
 class AddCspHeaders
 {
+    /** @param class-string<\Spatie\Csp\Preset> $customPreset */
     public function handle(
         Request $request,
         Closure $next,
-        ?string $customPreset = null
-    ) {
+        $customPreset = null
+    ): Response {
         $response = $next($request);
 
         if (! config('csp.enabled')) {
@@ -44,20 +45,34 @@ class AddCspHeaders
             return $response;
         }
 
+        /** @var array<class-string<\Spatie\Csp\Preset>> $presets */
+        $presets = config('csp.presets');
+        /** @var array<string, string|array<string>> $directives */
+        $directives = config('csp.directives');
+        /** @var string|null $reportUri */
+        $reportUri = config('csp.report_uri');
+
         $policy = Policy::create(
-            presets: config('csp.presets'),
-            directives: config('csp.directives'),
-            reportUri: config('csp.report_uri'),
+            presets: $presets,
+            directives: $directives,
+            reportUri: $reportUri,
         );
 
         if (! $policy->isEmpty()) {
             $response->headers->set('Content-Security-Policy', $policy->getContents());
         }
 
+        /** @var array<class-string<\Spatie\Csp\Preset>> $reportOnlyPresets */
+        $reportOnlyPresets = config('csp.report_only_presets');
+        /** @var array<string, string|array<string>> $reportOnlyDirectives */
+        $reportOnlyDirectives = config('csp.report_only_directives');
+        /** @var string|null $reportUri */
+        $reportUri = config('csp.report_uri');
+
         $reportOnlyPolicy = Policy::create(
-            presets: config('csp.report_only_presets'),
-            directives: config('csp.report_only_directives'),
-            reportUri: config('csp.report_uri'),
+            presets: $reportOnlyPresets,
+            directives: $reportOnlyDirectives,
+            reportUri: $reportUri,
         );
 
         if (! $reportOnlyPolicy->isEmpty()) {

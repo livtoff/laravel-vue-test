@@ -7,7 +7,7 @@ return [
      * any class that extends `Spatie\Csp\Preset`
      */
     'presets' => [
-        Spatie\Csp\Presets\Basic::class,
+        \Spatie\Csp\Presets\Basic::class,
     ],
 
     /**
